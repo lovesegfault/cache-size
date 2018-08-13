@@ -11,3 +11,32 @@ license = "BSD-3-Clause"
 
 [dependencies]
 raw-cpuid = "5.0.0"
+
+[profile.dev]
+opt-level = 1
+debug = true
+rpath = false
+lto = false
+codegen-units = 16
+panic = 'unwind'
+incremental = true
+overflow-checks = false
+
+[profile.release]
+opt-level = 3
+debug = false
+rpath = false
+lto = true
+debug-assertions = false
+codegen-units = 1
+panic = 'unwind'
+overflow-checks = false
+
+[profile.bench]
+opt-level = 3
+debug = false
+rpath = false
+lto = true
+debug-assertions = false
+codegen-units = 1
+overflow-checks = false
