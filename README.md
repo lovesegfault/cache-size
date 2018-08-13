@@ -1,4 +1,4 @@
-# cache-size [![Crates.io](https://img.shields.io/crates/v/cache-size.svg)](https://crates.io/crates/cache-size) [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause) [![Documentation](https://docs.rs/cache-size/badge.svg)](https://docs.rs/cache-size)
+# cache-size [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause) [![Crates.io](https://img.shields.io/crates/v/cache-size.svg)](https://crates.io/crates/cache-size) [![Documentation](https://docs.rs/cache-size/badge.svg)](https://docs.rs/cache-size)
 A library to quickly get the size and line size of your CPU caches.
 
 Currently this crate only supports x86 CPUs, since it relies on the `CPUID` instruction, via
