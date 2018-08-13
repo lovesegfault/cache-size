@@ -1,6 +1,6 @@
 [package]
 name = "cache-size"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Bernardo Meurer <meurerbernardo@gmail.com>"]
 description = "A library for finding your L1/L2/L3 cache sizes "
 repository = "https://github.com/bemeurer/cache-size"
