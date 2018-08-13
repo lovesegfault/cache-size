@@ -1,0 +1,6 @@
+[package]
+name = "cache-size"
+version = "0.1.0"
+authors = ["Bernardo Meurer <meurerbernardo@gmail.com>"]
+
+[dependencies]
