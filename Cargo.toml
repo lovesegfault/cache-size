@@ -6,7 +6,7 @@ description = "A library for finding your L1/L2/L3 cache sizes "
 repository = "https://github.com/bemeurer/cache-size"
 readme = "./README.md"
 keywords = ["memory", "performance", "line", "size", "cache"]
-categories = ["algorithms", "science"]
+categories = ["hardware-support", "memory-management"]
 license = "BSD-3-Clause"
 
 [dependencies]
