@@ -10,3 +10,4 @@ categories = ["algorithms", "science"]
 license = "BSD-3-Clause"
 
 [dependencies]
+raw-cpuid = "5.0.0"
