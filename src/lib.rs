@@ -47,7 +47,7 @@ pub fn cache_size(level: u8, ctype: CacheType) -> Option<usize> {
     let cpuid = CpuId::new();
     let caches = cpuid
         .get_cache_parameters()?
-        .filter(move |c| c.level() == level && c.cache_type() == ctype.into())
+        .filter(|c| c.level() == level && c.cache_type() == ctype.into())
         .map(|c| c.sets() * c.associativity() * c.coherency_line_size());
     let cache_size = caches.min()?;
     Some(cache_size)
