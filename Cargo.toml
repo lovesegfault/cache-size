@@ -14,7 +14,7 @@ travis-ci = { repository = "bemeurer/cache-size", branch = "master" }
 maintenance = { status = "actively-developed" }
 
 [dependencies]
-raw-cpuid = "5.0.0"
+raw-cpuid = "6.1.0"
 
 [profile.dev]
 opt-level = 1
