@@ -9,7 +9,7 @@
 pub use raw_cpuid::CacheType;
 use raw_cpuid::{self, CpuId};
 
-/// Returns the total size in bytes of `level` cache with type `ctype`.
+/// Returns the total size in bytes of `level` cache with type `cache_type`.
 ///
 /// The only possibilities for this returning `None` are if the system does not support cache
 /// parameters, in which case [`get_cache_parameters()`](raw_cpuid::CpuId::get_cache_parameters) will
@@ -18,17 +18,17 @@ use raw_cpuid::{self, CpuId};
 /// This is computed as `associativity * line_size * sets`, and if there are multiple caches
 /// available, it returns the size of the **smallest** cache.
 #[inline]
-pub fn cache_size(level: u8, ctype: CacheType) -> Option<usize> {
+pub fn cache_size(level: u8, cache_type: CacheType) -> Option<usize> {
     let cpuid = CpuId::new();
     let caches = cpuid
         .get_cache_parameters()?
-        .filter(|c| c.level() == level && c.cache_type() == ctype)
+        .filter(|c| c.level() == level && c.cache_type() == cache_type)
         .map(|c| c.sets() * c.associativity() * c.coherency_line_size());
     let cache_size = caches.min()?;
     Some(cache_size)
 }
 
-/// Returns the line size in bytes of `level` cache with type `ctype`.
+/// Returns the line size in bytes of `level` cache with type `cache_type`.
 ///
 /// The only possibilities for this returning `None` are if the system does not support cache
 /// parameters, in which case [`get_cache_parameters()`](raw_cpuid::CpuId::get_cache_parameters) will
@@ -37,11 +37,11 @@ pub fn cache_size(level: u8, ctype: CacheType) -> Option<usize> {
 /// This is computed from [`coherency_line_size()`](raw_cpuid::CacheParameter::coherency_line_size),
 /// and if there are multiple caches available, it returns the size of the **smallest** cache.
 #[inline]
-pub fn cache_line_size(level: u8, ctype: CacheType) -> Option<usize> {
+pub fn cache_line_size(level: u8, cache_type: CacheType) -> Option<usize> {
     let cpuid = CpuId::new();
     let caches = cpuid
         .get_cache_parameters()?
-        .filter(|cparams| cparams.level() == level && cparams.cache_type() == ctype)
+        .filter(|cparams| cparams.level() == level && cparams.cache_type() == cache_type)
         .map(|cparams| cparams.coherency_line_size());
     let cache_line_size = caches.min()?;
     Some(cache_line_size)
