@@ -6,31 +6,8 @@
 //!
 //! Check the [Intel 64 and IA-32 Architectures Software Developers Manual](https://software.intel.com/sites/default/files/managed/39/c5/325462-sdm-vol-1-2abcd-3abcd.pdf)
 //! for more information on the `CPUID` instruction.
+pub use raw_cpuid::CacheType;
 use raw_cpuid::{self, CpuId};
-
-/// All different types of cache
-///
-/// This is just a thin wrapper over [`raw_cpuid::CacheType`](raw_cpuid::CacheType) listing only the
-/// interesting possible types, and using more user-friendly CameCase names.
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
-pub enum CacheType {
-    /// Data cache
-    Data,
-    /// Instruction cache
-    Instruction,
-    /// Unified Data + Instruction cache
-    Unified,
-}
-
-impl Into<raw_cpuid::CacheType> for CacheType {
-    fn into(self) -> raw_cpuid::CacheType {
-        match self {
-            CacheType::Data => raw_cpuid::CacheType::Data,
-            CacheType::Instruction => raw_cpuid::CacheType::Instruction,
-            CacheType::Unified => raw_cpuid::CacheType::Unified,
-        }
-    }
-}
 
 /// Returns the total size in bytes of `level` cache with type `ctype`.
 ///
@@ -45,7 +22,7 @@ pub fn cache_size(level: u8, ctype: CacheType) -> Option<usize> {
     let cpuid = CpuId::new();
     let caches = cpuid
         .get_cache_parameters()?
-        .filter(|c| c.level() == level && c.cache_type() == ctype.into())
+        .filter(|c| c.level() == level && c.cache_type() == ctype)
         .map(|c| c.sets() * c.associativity() * c.coherency_line_size());
     let cache_size = caches.min()?;
     Some(cache_size)
@@ -64,7 +41,7 @@ pub fn cache_line_size(level: u8, ctype: CacheType) -> Option<usize> {
     let cpuid = CpuId::new();
     let caches = cpuid
         .get_cache_parameters()?
-        .filter(|cparams| cparams.level() == level && cparams.cache_type() == ctype.into())
+        .filter(|cparams| cparams.level() == level && cparams.cache_type() == ctype)
         .map(|cparams| cparams.coherency_line_size());
     let cache_line_size = caches.min()?;
     Some(cache_line_size)
