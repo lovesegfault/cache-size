@@ -6,48 +6,26 @@ language: rust
 services: docker
 sudo: required
 
-# TODO Rust builds on stable by default, this can be
-# overridden on a case by case basis down below.
-
 env:
   global:
-    # TODO Update this to match the name of your project.
-    - CRATE_NAME=trust
+    - CRATE_NAME=cache-size
 
 matrix:
-  # TODO These are all the build jobs. Adjust as necessary. Comment out what you
-  # don't need
   include:
     # Linux
-    # - env: TARGET=aarch64-unknown-linux-gnu
-    # - env: TARGET=arm-unknown-linux-gnueabi
-    # - env: TARGET=armv7-unknown-linux-gnueabihf
-    - env: TARGET=i686-unknown-linux-gnu
-    - env: TARGET=i686-unknown-linux-musl
-    # - env: TARGET=mips-unknown-linux-gnu
-    # - env: TARGET=mips64-unknown-linux-gnuabi64
-    # - env: TARGET=mips64el-unknown-linux-gnuabi64
-    # - env: TARGET=mipsel-unknown-linux-gnu
-    # - env: TARGET=powerpc-unknown-linux-gnu
-    # - env: TARGET=powerpc64-unknown-linux-gnu
-    # - env: TARGET=powerpc64le-unknown-linux-gnu
-    # - env: TARGET=s390x-unknown-linux-gnu DISABLE_TESTS=1
     - env: TARGET=x86_64-unknown-linux-gnu
     - env: TARGET=x86_64-unknown-linux-musl
 
     # OSX
-    - env: TARGET=i686-apple-darwin
-      os: osx
     - env: TARGET=x86_64-apple-darwin
       os: osx
 
     # *BSD
-    - env: TARGET=i686-unknown-freebsd DISABLE_TESTS=1
     - env: TARGET=x86_64-unknown-freebsd DISABLE_TESTS=1
     - env: TARGET=x86_64-unknown-netbsd DISABLE_TESTS=1
 
     # Windows
-    - env: TARGET=x86_64-pc-windows-gnu DISABLE_TESTS=1
+    - env: TARGET=x86_64-pc-windows-gnu
 
     # Testing other channels
     - env: TARGET=x86_64-unknown-linux-gnu
@@ -69,10 +47,19 @@ script:
 
 after_script: set +e
 
-# .travis.yml
+before_deploy:
+  - sh ci/before_deploy.sh
+
 deploy:
+  api_key:
+    secure: "ZqTDKMOQ22XmXxRb3ff/r8HekyK/uXv66RsV1XCMgwBwfzKkNofgVI1j41IMsU/TdGR85vk/S+f4B9Sf+xUDT3qURhCBjpda025yWNkURP+fDnSEU1mqetRAwR6Jf09c+7J2MMLGPxdz32cmU3xoPAOz0yam0n22lwbOoPw3R16og1At/cXPeG5Be3/cQf4N844jhgPQbbQnx+YsUKRgf8pLc9xCCl4Pc4nSXgP4oFj3DZVPY0yKX+VhRGO8r1YOiuGaH+9OxeKcdp6vR39FbhROPY/12aFXweqLNjO7uIazqp7zThy0/NzLIXAT/3IURJBCPzHKSsuivK5s72ZmmilX6voSXLdzmGdalUs6Fq0JTWTAVeeWyNMasNKhY2y2/OAGI69KegXk9yjbJWNf+26CaWPep75EBgYw5Ez42XL0Ep+NpHDc3Ybf/Ure0mVx7H9atvVtdg1JfGCEKZAKkNV4qLLFKQSo0CkGYCI1nuziIpLlGDHk3d1vkw6TBPc50ecxoLtLAumxkEzRBzIxeIARPQDQw3TC4EhqRy4NFaMHYxPvRMRFygfgKYfP3kUNvxqEWlLTs8VIJFG3EmV+4hhJ6em0uGER8XQ07H2oCa0d2roXO03QcA27frj2JbQP7/TxLR4fGmBJECHr+c0vft0T4Vggf0ukcLSG35yzhr0="
+  file_glob: true
+  file: $CRATE_NAME-$TRAVIS_TAG-$TARGET.*
   on:
-    condition: $DEPLOY = never
+    condition: $TRAVIS_RUST_VERSION = stable
+    tags: true
+  provider: releases
+  skip_cleanup: true
 
 cache: cargo
 before_cache:
