@@ -27,9 +27,9 @@ pub enum CacheType {
 impl Into<raw_cpuid::CacheType> for CacheType {
     fn into(self) -> raw_cpuid::CacheType {
         match self {
-            CacheType::Data => raw_cpuid::CacheType::DATA,
-            CacheType::Instruction => raw_cpuid::CacheType::INSTRUCTION,
-            CacheType::Unified => raw_cpuid::CacheType::UNIFIED,
+            CacheType::Data => raw_cpuid::CacheType::Data,
+            CacheType::Instruction => raw_cpuid::CacheType::Instruction,
+            CacheType::Unified => raw_cpuid::CacheType::Unified,
         }
     }
 }

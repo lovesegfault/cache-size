@@ -14,7 +14,7 @@ travis-ci = { repository = "lovesegfault/cache-size", branch = "master" }
 maintenance = { status = "actively-developed" }
 
 [dependencies]
-raw-cpuid = "6.1.0"
+raw-cpuid = "7.0.3"
 
 [profile.dev]
 opt-level = 1
