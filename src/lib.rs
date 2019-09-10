@@ -150,10 +150,9 @@ pub fn l3_cache_line_size() -> Option<usize> {
     cache_line_size(3, CacheType::Unified)
 }
 
+/// Tests
+///
+/// I'd like to figure out a way to test this crate, but it's behavior being entirely
+/// hardware-dependant that seems hard, if not impossible.
 #[cfg(test)]
-mod tests {
-    #[test]
-    fn l1_cache_size_works() {
-        assert_eq!(1, 1)
-    }
-}
+mod tests {}
