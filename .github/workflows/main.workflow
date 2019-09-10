@@ -1,6 +1,6 @@
 workflow "Main" {
   on = "push"
-  resolves = ["Format", "Clippy", "Build", "Test"]
+  resolves = ["Test"]
 }
 
 action "Format" {
@@ -10,15 +10,18 @@ action "Format" {
 
 action "Clippy" {
   uses = "icepuma/rust-action@master"
+  needs = ["Format"]
   args = "cargo clippy -- -Dwarnings"
 }
 
 action "Build" {
   uses = "icepuma/rust-action@master"
+  needs = ["Clippy"]
   args = "cargo build"
 }
 
 action "Test" {
   uses = "icepuma/rust-action@master"
+  needs = ["Build"]
   args = "cargo test"
 }
