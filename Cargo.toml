@@ -1,17 +1,17 @@
 [package]
-name = "cache-size"
-version = "0.3.5"
 authors = ["Bernardo Meurer <meurerbernardo@gmail.com>"]
-description = "A library for finding your L1/L2/L3 cache sizes "
-repository = "https://github.com/lovesegfault/cache-size"
-readme = "./README.md"
-keywords = ["memory", "performance", "line", "size", "cache"]
 categories = ["hardware-support", "memory-management"]
+description = "A library for finding your L1/L2/L3 cache sizes "
+keywords = ["memory", "performance", "line", "size", "cache"]
 license = "BSD-3-Clause"
+name = "cache-size"
+readme = "./README.md"
+repository = "https://github.com/lovesegfault/cache-size"
+version = "0.3.5"
 
 [badges]
-travis-ci = { repository = "lovesegfault/cache-size", branch = "master" }
 maintenance = { status = "actively-developed" }
+travis-ci = { repository = "lovesegfault/cache-size", branch = "master" }
 
 [dependencies]
 raw-cpuid = "7.0.3"
