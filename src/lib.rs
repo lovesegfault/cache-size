@@ -6,9 +6,7 @@
 //!
 //! Check the [Intel 64 and IA-32 Architectures Software Developers Manual](https://software.intel.com/sites/default/files/managed/39/c5/325462-sdm-vol-1-2abcd-3abcd.pdf)
 //! for more information on the `CPUID` instruction.
-extern crate raw_cpuid;
-
-use raw_cpuid::CpuId;
+use raw_cpuid::{self, CpuId};
 
 /// All different types of cache
 ///

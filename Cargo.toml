@@ -2,6 +2,7 @@
 authors = ["Bernardo Meurer <meurerbernardo@gmail.com>"]
 categories = ["hardware-support", "memory-management"]
 description = "A library for finding your L1/L2/L3 cache sizes "
+edition = "2018"
 keywords = ["memory", "performance", "line", "size", "cache"]
 license = "BSD-3-Clause"
 name = "cache-size"
