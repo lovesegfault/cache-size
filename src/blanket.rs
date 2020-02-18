@@ -1,12 +1,12 @@
 use crate::CacheType;
 
 #[inline]
-fn cache_size(level: u8, cache_type: CacheType) -> Option<usize> {
+fn cache_size(_level: u8, _cache_type: CacheType) -> Option<usize> {
     None
 }
 
 #[inline]
-fn cache_line_size(level: u8, cache_type: CacheType) -> Option<usize> {
+fn cache_line_size(_level: u8, _cache_type: CacheType) -> Option<usize> {
     None
 }
 
