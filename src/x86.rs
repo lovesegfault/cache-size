@@ -1,5 +1,17 @@
-pub use raw_cpuid::CacheType;
+use crate::CacheType;
 use raw_cpuid::{self, CpuId};
+
+impl From<CacheType> for raw_cpuid::CacheType {
+    fn from(ct: CacheType) -> Self {
+        match ct {
+            CacheType::Null => raw_cpuid::CacheType::Null,
+            CacheType::Data => raw_cpuid::CacheType::Data,
+            CacheType::Instruction => raw_cpuid::CacheType::Instruction,
+            CacheType::Unified => raw_cpuid::CacheType::Unified,
+            CacheType::Reserved => raw_cpuid::CacheType::Reserved,
+        }
+    }
+}
 
 /// Returns the total size in bytes of `level` cache with type `cache_type`.
 ///
@@ -14,7 +26,7 @@ pub fn cache_size(level: u8, cache_type: CacheType) -> Option<usize> {
     let cpuid = CpuId::new();
     let caches = cpuid
         .get_cache_parameters()?
-        .filter(|c| c.level() == level && c.cache_type() == cache_type)
+        .filter(|c| c.level() == level && c.cache_type() == cache_type.into())
         .map(|c| c.sets() * c.associativity() * c.coherency_line_size());
     let cache_size = caches.min()?;
     Some(cache_size)
@@ -33,7 +45,7 @@ pub fn cache_line_size(level: u8, cache_type: CacheType) -> Option<usize> {
     let cpuid = CpuId::new();
     let caches = cpuid
         .get_cache_parameters()?
-        .filter(|cparams| cparams.level() == level && cparams.cache_type() == cache_type)
+        .filter(|cparams| cparams.level() == level && cparams.cache_type() == cache_type.into())
         .map(|cparams| cparams.coherency_line_size());
     let cache_line_size = caches.min()?;
     Some(cache_line_size)

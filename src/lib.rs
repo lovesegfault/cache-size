@@ -15,3 +15,16 @@
 )]
 mod imp;
 pub use imp::*;
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum CacheType {
+    /// Null - No more caches
+    Null = 0,
+    /// Data cache
+    Data,
+    /// Instruction cache
+    Instruction,
+    /// Data and Instruction cache
+    Unified,
+    Reserved,
+}
