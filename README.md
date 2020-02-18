@@ -1,5 +1,5 @@
 # cache-size
-[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause) [![Crates.io](https://img.shields.io/crates/v/cache-size.svg)](https://crates.io/crates/cache-size) [![Documentation](https://docs.rs/cache-size/badge.svg)](https://docs.rs/cache-size) [![Build Status](https://travis-ci.org/lovesegfault/cache-size.svg?branch=master)](https://travis-ci.org/lovesegfault/cache-size)
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause) [![Crates.io](https://img.shields.io/crates/v/cache-size.svg)](https://crates.io/crates/cache-size) [![Documentation](https://docs.rs/cache-size/badge.svg)](https://docs.rs/cache-size) ![Continuous Integration](https://github.com/lovesegfault/cache-size/workflows/Continuous%20Integration/badge.svg)
 
 A library to quickly get the size and line size of your CPU caches.
 
