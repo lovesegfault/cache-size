@@ -68,27 +68,27 @@ pub fn l3_cache_line_size() -> Option<usize> {
 mod tests {
     use super::*;
     #[test]
-    fn test_l1_cache_size() -> {
+    fn test_l1_cache_size() {
         assert_eq!(l1_cache_size(), None);
     }
     #[test]
-    fn test_l1_cache_line_size() -> {
+    fn test_l1_cache_line_size() {
         assert_eq!(l1_cache_line_size(), None)
     }
     #[test]
-    fn test_l2_cache_size() -> {
+    fn test_l2_cache_size() {
         assert_eq!(l2_cache_size(), None);
     }
     #[test]
-    fn test_l2_cache_line_size() -> {
+    fn test_l2_cache_line_size() {
         assert_eq!(l2_cache_line_size(), None);
     }
     #[test]
-    fn test_l3_cache_size() -> {
+    fn test_l3_cache_size() {
         assert_eq!(l3_cache_size(), None);
     }
     #[test]
-    fn test_l3_cache_line_size() -> {
+    fn test_l3_cache_line_size() {
         assert_eq!(l3_cache_line_size(), None);
     }
 }
