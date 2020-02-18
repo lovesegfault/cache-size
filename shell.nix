@@ -16,7 +16,7 @@ let
 in
   with nixpkgs;
   mkShell {
-    name = "chirp";
+    name = "cache-size";
     buildInputs = [
       cargo-edit
       rustStable
