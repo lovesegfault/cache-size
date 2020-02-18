@@ -42,8 +42,8 @@ pub fn l3_cache_line_size() -> Option<usize> {
 mod tests {
     use super::*;
 
-    test_blanket_l3_cache_line_size() {
+    #[test]
+    fn test_blanket_l3_cache_line_size() {
         assert_eq!(l3_cache_line_size(), None);
     }
-
 }
