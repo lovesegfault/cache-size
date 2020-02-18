@@ -23,6 +23,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: ${{ matrix.rust }}
+          override: true
+          components: rustfmt, clippy
+
+
       - name: Cache cargo registry
         uses: actions/cache@v1
         with:
@@ -40,14 +49,6 @@ jobs:
         with:
           path: target
           key: ${{ runner.os }}-cargo-${{ matrix.rust }}-build-target-${{ hashFiles('**/Cargo.lock') }}
-
-      - name: Toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: ${{ matrix.rust }}
-          override: true
-          components: rustfmt, clippy
 
       - name: Format
         uses: actions-rs/cargo@v1
