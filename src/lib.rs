@@ -7,14 +7,15 @@
 //! Check the [Intel 64 and IA-32 Architectures Software Developers Manual](https://software.intel.com/sites/default/files/managed/39/c5/325462-sdm-vol-1-2abcd-3abcd.pdf)
 //! for more information on the `CPUID` instruction.
 
-#[cfg_attr(target_arch = "x86", path = "x86.rs")]
-#[cfg_attr(target_arch = "x86_64", path = "x86.rs")]
-#[cfg_attr(
-    not(any(target_arch = "x86_64", target_arch = "x86")),
-    path = "blanket.rs"
-)]
-mod imp;
-pub use imp::*;
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+mod x86;
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+pub use x86::*;
+
+#[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
+mod blanket;
+#[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
+pub use blanket::*;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum CacheType {
