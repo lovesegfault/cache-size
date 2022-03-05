@@ -13,6 +13,7 @@ impl From<CacheType> for raw_cpuid::CacheType {
     }
 }
 
+/// Uses cache parameters to get cache size at a given level with the provided cache type.
 #[inline]
 fn get_cache_parameters_cache_size(cpuid: CpuId, level: u8, cache_type: CacheType) -> Option<usize> {
     let caches = cpuid
@@ -23,6 +24,7 @@ fn get_cache_parameters_cache_size(cpuid: CpuId, level: u8, cache_type: CacheTyp
     Some(cache_size)
 }
 
+/// Uses cache parameters to get cache line size at a given level with the provided cache type.
 #[inline]
 fn get_cache_parameters_cache_line_size(cpuid: CpuId, level: u8, cache_type: CacheType) -> Option<usize>{
     let caches = cpuid
@@ -38,8 +40,12 @@ fn get_cache_parameters_cache_line_size(cpuid: CpuId, level: u8, cache_type: Cac
 /// The only possibilities for this returning `None` are if the system does not support cache
 /// parameters, in which case [`get_cache_parameters()`](raw_cpuid::CpuId::get_cache_parameters) will
 /// fail, or if the selected cache level and/or type does not exist.
+/// 
+/// On an AMD architecture this is computed using tlb info. The values come back in kilobytes,
+/// so they are multiplied by 1024 to give the size in bytes to match the behaviour of
+/// other architectures.
 ///
-/// This is computed as `associativity * line_size * sets`, and if there are multiple caches
+/// On other architectures this is computed as `associativity * line_size * sets`, and if there are multiple caches
 /// available, it returns the size of the **smallest** cache.
 #[inline]
 pub fn cache_size(level: u8, cache_type: CacheType) -> Option<usize> {
@@ -78,7 +84,11 @@ pub fn cache_size(level: u8, cache_type: CacheType) -> Option<usize> {
 /// parameters, in which case [`get_cache_parameters()`](raw_cpuid::CpuId::get_cache_parameters) will
 /// fail, or if the selected cache level and/or type does not exist.
 ///
-/// This is computed from [`coherency_line_size()`](raw_cpuid::CacheParameter::coherency_line_size),
+/// On an AMD architecture this is computed using tlb info. Instruction and data cache line sizes are
+/// available separately for the L1 cache, but only unified is available for L2 and L3 caches.
+/// 
+/// On other x86 architectures this is computed from
+/// [`coherency_line_size()`](raw_cpuid::CacheParameter::coherency_line_size),
 /// and if there are multiple caches available, it returns the size of the **smallest** cache.
 #[inline]
 pub fn cache_line_size(level: u8, cache_type: CacheType) -> Option<usize> {
