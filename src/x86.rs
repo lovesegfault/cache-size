@@ -55,13 +55,13 @@ pub fn cache_size(level: u8, cache_type: CacheType) -> Option<usize> {
             },
             2 => {
                 match cache_type {
-                    CacheType::Data => Some(cpuid.get_l2_l3_cache_and_tlb_info()?.l2cache_size() as usize * 1024),
+                    CacheType::Unified => Some(cpuid.get_l2_l3_cache_and_tlb_info()?.l2cache_size() as usize * 1024),
                     _ => None
                 }
             },
             3 => {
                 match cache_type {
-                    CacheType::Data => Some(cpuid.get_l2_l3_cache_and_tlb_info()?.l3cache_size() as usize * 1024),
+                    CacheType::Unified => Some(cpuid.get_l2_l3_cache_and_tlb_info()?.l3cache_size() as usize * 1024),
                     _ => None
                 }
             },
