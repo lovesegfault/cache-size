@@ -1,13 +1,23 @@
-name: Continuous Integration
-
+name: ci
 on:
   push:
-    branches: [ "master" ]
+    branches:
+      - master
   pull_request:
-    branches: [ "**" ]
-
 jobs:
-  ci:
+  nix-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v16
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+      - name: nix build
+        run: nix build -L
+      - name: nix check
+        run: nix check -L
+  rust-build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -18,37 +28,29 @@ jobs:
           - stable
           - beta
           - nightly
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Toolchain
-        uses: actions-rs/toolchain@v1
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
           toolchain: ${{ matrix.rust }}
           override: true
           components: rustfmt, clippy
-
-      - name: Format
+      - name: fmt
         uses: actions-rs/cargo@v1
         with:
           command: fmt
           args: --all -- --check
-
-      - name: Build
+      - name: build
         uses: actions-rs/cargo@v1
         with:
           command: build
-
-      - name: Clippy
+      - name: clippy
         uses: actions-rs/cargo@v1
         with:
           command: clippy
           args: -- -D warnings
-
-      - name: Test
+      - name: test
         uses: actions-rs/cargo@v1
         with:
           command: test
