@@ -19,16 +19,3 @@ pub use x86::*;
 mod blanket;
 #[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
 pub use blanket::*;
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum CacheType {
-    /// Null - No more caches
-    Null = 0,
-    /// Data cache
-    Data,
-    /// Instruction cache
-    Instruction,
-    /// Data and Instruction cache
-    Unified,
-    Reserved,
-}

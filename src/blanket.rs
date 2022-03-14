@@ -1,4 +1,4 @@
-use crate::CacheType;
+pub enum CacheType {}
 
 /// Returns the total size in bytes of `level` cache with type `cache_type`.
 ///
