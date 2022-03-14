@@ -55,9 +55,9 @@
       };
     in
     {
+      checks = { inherit fmt clippy; };
       packages.default = crate;
-      checks = { inherit crate; };
-      devShell = with pkgs; mkShell {
+      devShells.default = with pkgs; mkShell {
         name = "cache-size";
         nativeBuildInputs = [
           (rust-bin.fromRustupToolchainFile ./rust-toolchain.toml)
