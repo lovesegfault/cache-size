@@ -1,0 +1,47 @@
+repos:
+  - repo: meta
+    hooks:
+      - id: check-hooks-apply
+      - id: check-useless-excludes
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.1.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: check-vcs-permalinks
+      - id: check-yaml
+      - id: destroyed-symlinks
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: fix-byte-order-marker
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+
+  - repo: local
+    hooks:
+    - id: cargo-fmt
+      name: cargo fmt
+      entry: cargo fmt
+      types: [rust]
+      language: system
+      pass_filenames: false
+    - id: cargo-check
+      name: cargo check
+      entry: cargo check
+      types: [rust]
+      language: system
+      pass_filenames: false
+    - id: cargo-clippy
+      name: cargo clippy
+      entry: cargo clippy -- --deny warnings
+      types: [rust]
+      language: system
+      pass_filenames: false
+    - id: nixpkgs-fmt
+      entry: nixpkgs-fmt
+      types: [nix]
+      language: system
+      name: nixpkgs-fmt

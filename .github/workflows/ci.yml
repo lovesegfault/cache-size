@@ -5,6 +5,16 @@ on:
       - master
   pull_request:
 jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v16
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+      - name: nix build
+        run: nix develop --command "pre-commit run --all-files"
   nix-build:
     runs-on: ubuntu-latest
     steps:

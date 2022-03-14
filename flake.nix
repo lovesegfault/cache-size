@@ -68,7 +68,12 @@
 
           nixpkgs-fmt
           rnix-lsp
+
+          pre-commit
         ];
+        shellHook = ''
+          pre-commit install --install-hooks
+        '';
       };
     });
 }
