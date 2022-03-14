@@ -25,8 +25,8 @@ jobs:
             experimental-features = nix-command flakes
       - name: nix build
         run: nix build -L
-      - name: nix check
-        run: nix check -L
+      - name: nix flake check
+        run: nix flake check -L
   rust-build:
     runs-on: ${{ matrix.os }}
     strategy:
