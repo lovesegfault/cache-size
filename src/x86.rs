@@ -29,28 +29,19 @@ fn generic_cache_size(cpuid: CpuId, level: u8, cache_type: CacheType) -> Option<
 /// 1024 to give the size in bytes to match the behaviour of other architectures.
 #[inline]
 fn amd_cache_size(cpuid: CpuId, level: u8, cache_type: CacheType) -> Option<usize> {
-    match level {
-        1 => match cache_type {
-            CacheType::Instruction => {
-                Some(cpuid.get_l1_cache_and_tlb_info()?.icache_size() as usize * 1024)
-            }
-            CacheType::Data => {
-                Some(cpuid.get_l1_cache_and_tlb_info()?.dcache_size() as usize * 1024)
-            }
-            _ => None,
-        },
-        2 => match cache_type {
-            CacheType::Unified => {
-                Some(cpuid.get_l2_l3_cache_and_tlb_info()?.l2cache_size() as usize * 1024)
-            }
-            _ => None,
-        },
-        3 => match cache_type {
-            CacheType::Unified => {
-                Some(cpuid.get_l2_l3_cache_and_tlb_info()?.l3cache_size() as usize * 1024)
-            }
-            _ => None,
-        },
+    match (level, cache_type) {
+        (1, CacheType::Instruction) => cpuid
+            .get_l1_cache_and_tlb_info()
+            .map(|i| i.icache_size() as usize * 1024),
+        (1, CacheType::Data) => cpuid
+            .get_l1_cache_and_tlb_info()
+            .map(|i| i.icache_size() as usize * 1024),
+        (2, CacheType::Unified) => cpuid
+            .get_l2_l3_cache_and_tlb_info()
+            .map(|i| i.l2cache_size() as usize * 1024),
+        (3, CacheType::Unified) => cpuid
+            .get_l2_l3_cache_and_tlb_info()
+            .map(|i| i.l3cache_size() as usize * 1024),
         _ => None,
     }
 }
@@ -93,26 +84,19 @@ fn generic_cache_line_size(cpuid: CpuId, level: u8, cache_type: CacheType) -> Op
 /// are available separately for the L1 cache, but only unified is available for L2 and L3 caches.
 #[inline]
 fn amd_cache_line_size(cpuid: CpuId, level: u8, cache_type: CacheType) -> Option<usize> {
-    match level {
-        1 => match cache_type {
-            CacheType::Instruction => {
-                Some(cpuid.get_l1_cache_and_tlb_info()?.icache_line_size() as usize)
-            }
-            CacheType::Data => Some(cpuid.get_l1_cache_and_tlb_info()?.dcache_line_size() as usize),
-            _ => None,
-        },
-        2 => match cache_type {
-            CacheType::Unified => {
-                Some(cpuid.get_l2_l3_cache_and_tlb_info()?.l2cache_line_size() as usize)
-            }
-            _ => None,
-        },
-        3 => match cache_type {
-            CacheType::Unified => {
-                Some(cpuid.get_l2_l3_cache_and_tlb_info()?.l3cache_line_size() as usize)
-            }
-            _ => None,
-        },
+    match (level, cache_type) {
+        (1, CacheType::Instruction) => cpuid
+            .get_l1_cache_and_tlb_info()
+            .map(|i| i.icache_line_size() as usize),
+        (1, CacheType::Data) => cpuid
+            .get_l1_cache_and_tlb_info()
+            .map(|i| i.dcache_line_size() as usize),
+        (2, CacheType::Unified) => cpuid
+            .get_l2_l3_cache_and_tlb_info()
+            .map(|i| i.l2cache_line_size() as usize),
+        (3, CacheType::Unified) => cpuid
+            .get_l2_l3_cache_and_tlb_info()
+            .map(|i| i.l3cache_line_size() as usize),
         _ => None,
     }
 }
