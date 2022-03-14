@@ -17,12 +17,11 @@ fn amd_is_zen(cpuid: &CpuId) -> Option<bool> {
 /// Uses cache parameters to get cache size at a given level with the provided cache type.
 #[inline]
 fn generic_cache_size(cpuid: CpuId, level: u8, cache_type: CacheType) -> Option<usize> {
-    let caches = cpuid
+    cpuid
         .get_cache_parameters()?
         .filter(|c| c.level() == level && c.cache_type() == cache_type)
-        .map(|c| c.sets() * c.associativity() * c.coherency_line_size());
-    let cache_size = caches.min()?;
-    Some(cache_size)
+        .map(|c| c.sets() * c.associativity() * c.coherency_line_size())
+        .min()
 }
 
 /// This is computed using tlb info. The values come back in kilobytes, so they are multiplied by
@@ -72,12 +71,11 @@ pub fn cache_size(level: u8, cache_type: CacheType) -> Option<usize> {
 /// Uses cache parameters to get cache line size at a given level with the provided cache type.
 #[inline]
 fn generic_cache_line_size(cpuid: CpuId, level: u8, cache_type: CacheType) -> Option<usize> {
-    let caches = cpuid
+    cpuid
         .get_cache_parameters()?
         .filter(|cparams| cparams.level() == level && cparams.cache_type() == cache_type)
-        .map(|cparams| cparams.coherency_line_size());
-    let cache_line_size = caches.min()?;
-    Some(cache_line_size)
+        .map(|cparams| cparams.coherency_line_size())
+        .min()
 }
 
 /// This is computed using tlb info. Instruction and data cache line sizes
