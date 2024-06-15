@@ -1,4 +1,17 @@
-pub enum CacheType {}
+/// Info about a what a given cache caches (instructions, data, etc.)
+#[derive(PartialEq, Eq, Debug)]
+pub enum CacheType {
+    /// Null - No more caches
+    Null = 0,
+    /// Data cache
+    Data,
+    /// Instruction cache
+    Instruction,
+    /// Data and Instruction cache
+    Unified,
+    /// 4-31 = Reserved
+    Reserved,
+}
 
 /// Returns the total size in bytes of `level` cache with type `cache_type`.
 ///
