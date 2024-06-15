@@ -9,7 +9,7 @@ pub use raw_cpuid::CacheType;
 fn amd_is_zen(cpuid: &CpuId) -> Option<bool> {
     let info = cpuid.get_feature_info()?;
     match (info.base_family_id(), info.extended_family_id()) {
-        (0xF, 0x8 | 0x9 | 0xA) => Some(true),
+        (0xF, 0x8..=0xA) => Some(true),
         _ => Some(false),
     }
 }
