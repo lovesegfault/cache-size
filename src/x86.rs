@@ -1,4 +1,4 @@
-use raw_cpuid::{self, CpuId};
+use raw_cpuid::{self, CpuId, CpuIdReaderNative};
 
 pub use raw_cpuid::CacheType;
 
@@ -6,7 +6,7 @@ pub use raw_cpuid::CacheType;
 ///
 /// Data pulled from https://en.wikichip.org/wiki/amd/cpuid.
 #[inline]
-fn amd_is_zen(cpuid: &CpuId) -> Option<bool> {
+fn amd_is_zen(cpuid: &CpuId<CpuIdReaderNative>) -> Option<bool> {
     let info = cpuid.get_feature_info()?;
     match (info.base_family_id(), info.extended_family_id()) {
         (0xF, 0x8..=0xA) => Some(true),
@@ -16,7 +16,11 @@ fn amd_is_zen(cpuid: &CpuId) -> Option<bool> {
 
 /// Uses cache parameters to get cache size at a given level with the provided cache type.
 #[inline]
-fn generic_cache_size(cpuid: CpuId, level: u8, cache_type: CacheType) -> Option<usize> {
+fn generic_cache_size(
+    cpuid: CpuId<CpuIdReaderNative>,
+    level: u8,
+    cache_type: CacheType,
+) -> Option<usize> {
     cpuid
         .get_cache_parameters()?
         .filter(|c| c.level() == level && c.cache_type() == cache_type)
@@ -27,7 +31,11 @@ fn generic_cache_size(cpuid: CpuId, level: u8, cache_type: CacheType) -> Option<
 /// This is computed using tlb info. The values come back in kilobytes, so they are multiplied by
 /// 1024 to give the size in bytes to match the behaviour of other architectures.
 #[inline]
-fn amd_cache_size(cpuid: CpuId, level: u8, cache_type: CacheType) -> Option<usize> {
+fn amd_cache_size(
+    cpuid: CpuId<CpuIdReaderNative>,
+    level: u8,
+    cache_type: CacheType,
+) -> Option<usize> {
     match (level, cache_type) {
         (1, CacheType::Instruction) => cpuid
             .get_l1_cache_and_tlb_info()
@@ -70,7 +78,11 @@ pub fn cache_size(level: u8, cache_type: CacheType) -> Option<usize> {
 
 /// Uses cache parameters to get cache line size at a given level with the provided cache type.
 #[inline]
-fn generic_cache_line_size(cpuid: CpuId, level: u8, cache_type: CacheType) -> Option<usize> {
+fn generic_cache_line_size(
+    cpuid: CpuId<CpuIdReaderNative>,
+    level: u8,
+    cache_type: CacheType,
+) -> Option<usize> {
     cpuid
         .get_cache_parameters()?
         .filter(|cparams| cparams.level() == level && cparams.cache_type() == cache_type)
@@ -81,7 +93,11 @@ fn generic_cache_line_size(cpuid: CpuId, level: u8, cache_type: CacheType) -> Op
 /// This is computed using tlb info. Instruction and data cache line sizes
 /// are available separately for the L1 cache, but only unified is available for L2 and L3 caches.
 #[inline]
-fn amd_cache_line_size(cpuid: CpuId, level: u8, cache_type: CacheType) -> Option<usize> {
+fn amd_cache_line_size(
+    cpuid: CpuId<CpuIdReaderNative>,
+    level: u8,
+    cache_type: CacheType,
+) -> Option<usize> {
     match (level, cache_type) {
         (1, CacheType::Instruction) => cpuid
             .get_l1_cache_and_tlb_info()
