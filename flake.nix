@@ -51,7 +51,8 @@
           rust-analyzer
 
           nixpkgs-fmt
-          rnix-lsp
+          nil
+          statix
 
           pre-commit
         ];
