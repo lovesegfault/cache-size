@@ -2,43 +2,31 @@
   description = " A Rust library to quickly get the size and line size of your CPU caches";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     crane = {
       url = "github:ipetkov/crane";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-compat.follows = "flake-compat";
-      inputs.utils.follows = "utils";
     };
     flake-compat = {
       url = "github:edolstra/flake-compat";
       flake = false;
     };
-    gitignore = {
-      url = "github:hercules-ci/gitignore.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     rust = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "utils";
     };
     utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, crane, gitignore, rust, utils, ... }: utils.lib.eachDefaultSystem (system:
+  outputs = { self, nixpkgs, crane, rust, utils, ... }: utils.lib.eachDefaultSystem (system:
     let
-      pkgs = import nixpkgs { inherit system; overlays = [ gitignore.overlay rust.overlay ]; };
+      pkgs = import nixpkgs { inherit system; overlays = [ rust.overlays.default ]; };
 
       toolchain = pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
 
-      craneLib = (crane.mkLib pkgs).overrideScope' (_: _: {
-        cargo = toolchain;
-        clippy = toolchain;
-        rustc = toolchain;
-        rustfmt = toolchain;
-      });
+      craneLib = (crane.mkLib pkgs).overrideToolchain toolchain;
 
-      src = pkgs.gitignoreSource ./.;
+      src = ./.;
 
       cargoArtifacts = craneLib.buildDepsOnly {
         inherit src;
