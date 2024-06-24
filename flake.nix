@@ -7,10 +7,6 @@
       url = "github:ipetkov/crane";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    flake-compat = {
-      url = "github:edolstra/flake-compat";
-      flake = false;
-    };
     rust = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -22,9 +18,9 @@
     let
       pkgs = import nixpkgs { inherit system; overlays = [ rust.overlays.default ]; };
 
-      toolchain = pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
+      rustToolchain = pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
 
-      craneLib = (crane.mkLib pkgs).overrideToolchain toolchain;
+      craneLib = (crane.mkLib pkgs).overrideToolchain rustToolchain;
 
       src = ./.;
 
@@ -48,7 +44,7 @@
       devShells.default = with pkgs; mkShell {
         name = "cache-size";
         nativeBuildInputs = [
-          (rust-bin.fromRustupToolchainFile ./rust-toolchain.toml)
+          rustToolchain
           cargo-edit
           cargo-udeps
           cargo-watch
