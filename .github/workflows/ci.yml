@@ -12,9 +12,10 @@ jobs:
   pre-commit:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@v12
       - name: pre-commit-run
-        run: nix develop '${{ env.flake }}' --command -- pre-commit run --all-files
+        run: nix develop --command -- pre-commit run --all-files
   nix-build:
     runs-on: ubuntu-latest
     steps:
